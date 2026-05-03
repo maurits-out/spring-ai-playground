@@ -1,0 +1,1 @@
+Return at most 5 synonyms for the word ${word}.
