@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * RAG
+ */
 @RestController
-public class FaqController {
+final class FaqController {
 
     private final ChatClient chatClient;
     private final VectorStoreRetriever vectorStoreRetriever;

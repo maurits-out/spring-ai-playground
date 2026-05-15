@@ -31,12 +31,6 @@ public class ChatController {
         this.chatClient = builder.build();
     }
 
-    @GetMapping("/hello-llm")
-    public Map<String, String> generate(@RequestParam(value = "message", defaultValue = "Tell me a joke") String message) {
-        String generation = chatClient.prompt(message).call().content();
-        return Map.of("generation", requireNonNull(generation));
-    }
-
     @GetMapping("/synonyms")
     public String synonyms(@RequestParam(value = "word", defaultValue = "eating") String word) {
         PromptTemplate template = new PromptTemplate(synonymPromptResource);
