@@ -18,12 +18,13 @@ import java.util.Objects;
 @RestController
 final class ArtistController {
 
-    private final ChatClient chatClient;
-    private final MapOutputConverter converter = new MapOutputConverter();
-    private final String message = """
+    private static final String MESSAGE = """
             Generate a list of links for the artist {artist}. Include the name of the artist as the key and any social network links as the object.
             {format}
             """;
+
+    private final ChatClient chatClient;
+    private final MapOutputConverter converter = new MapOutputConverter();
 
     public ArtistController(ChatClient.Builder builder) {
         this.chatClient = builder.build();
@@ -31,7 +32,7 @@ final class ArtistController {
 
     @GetMapping("/links")
     public Map<String, Object> getSocialLinksByArtist(@RequestParam(value = "artist", defaultValue = "U2") String artist) {
-        PromptTemplate template = new PromptTemplate(message);
+        PromptTemplate template = new PromptTemplate(MESSAGE);
         Prompt prompt = template.create(additionalVariables(artist));
         String content = chatClient.prompt(prompt).call().content();
         return converter.convert(Objects.requireNonNull(content));

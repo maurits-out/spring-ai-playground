@@ -2,7 +2,6 @@ package dev.mout.spring_ai_demo;
 
 import org.jspecify.annotations.NonNull;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * 4. Stuffing the prompt.
@@ -41,15 +38,12 @@ final class OlympicController {
             @RequestParam(value = "message", defaultValue = "What sports are being included in the 2028 Summer Olympics?") String message,
             @RequestParam(value = "stuffit", defaultValue = "false") boolean stuffit) {
         PromptTemplate template = new PromptTemplate(olympicSportsResource);
-        Map<String, Object> additionalVariables = getAdditionalVariables(message, stuffit);
+        Map<String, Object> additionalVariables = additionalVariables(message, stuffit);
         Prompt prompt = template.create(additionalVariables);
-        ChatResponse response = chatClient.prompt(prompt).call().chatResponse();
-        requireNonNull(response);
-        requireNonNull(response.getResult());
-        return response.getResult().getOutput().getText();
+        return chatClient.prompt(prompt).call().content();
     }
 
-    private @NonNull Map<String, Object> getAdditionalVariables(String message, boolean stuffit) {
+    private @NonNull Map<String, Object> additionalVariables(String message, boolean stuffit) {
         return Map.of(
                 "question", message,
                 "context", stuffit ? docsToStuffResource : ""

@@ -19,13 +19,14 @@ import java.util.Objects;
 @RestController
 final class SongsController {
 
-    private final ChatClient chatClient;
-    private final BeanOutputConverter<Artist> converter = new BeanOutputConverter<>(Artist.class);
-    private final String message = """
+    private static final String MESSAGE = """
             Generate a list of songs performed by the artist {artist}. If you aren't positive that a song
             belongs to this artist then don't include it.
             {format}
             """;
+
+    private final ChatClient chatClient;
+    private final BeanOutputConverter<Artist> converter = new BeanOutputConverter<>(Artist.class);
 
     public SongsController(ChatClient.Builder builder) {
         this.chatClient = builder.build();
@@ -33,7 +34,7 @@ final class SongsController {
 
     @GetMapping("/songs-by-artist")
     public Artist getSongsByArtist(@RequestParam(value = "artist", defaultValue = "Earth, wind and fire") String artist) {
-        PromptTemplate template = new PromptTemplate(message);
+        PromptTemplate template = new PromptTemplate(MESSAGE);
         Prompt prompt = template.create(additionalVariables(artist));
         String content = chatClient.prompt(prompt).call().content();
         return converter.convert(Objects.requireNonNull(content));
