@@ -30,11 +30,11 @@ final class SynonymsController {
     @GetMapping("/synonyms")
     public String synonyms(@RequestParam(value = "word", defaultValue = "eating") String word) {
         PromptTemplate template = new PromptTemplate(resource);
-        Prompt prompt = template.create(getAdditionalVariables(word));
+        Prompt prompt = template.create(additionalVariables(word));
         return chatClient.prompt(prompt).call().content();
     }
 
-    private @NonNull Map<String, Object> getAdditionalVariables(String word) {
+    private @NonNull Map<String, Object> additionalVariables(String word) {
         return Map.of("word", word);
     }
 }
