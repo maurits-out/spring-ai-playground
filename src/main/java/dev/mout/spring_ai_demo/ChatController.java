@@ -24,23 +24,8 @@ public class ChatController {
 
     private final ChatClient chatClient;
 
-    @Value("classpath:/prompts/synonyms.st")
-    private Resource synonymPromptResource;
-
     public ChatController(ChatClient.Builder builder) {
         this.chatClient = builder.build();
-    }
-
-    @GetMapping("/synonyms")
-    public String synonyms(@RequestParam(value = "word", defaultValue = "eating") String word) {
-        PromptTemplate template = new PromptTemplate(synonymPromptResource);
-        Prompt prompt = template.create(Map.of("word", word));
-
-        ChatResponse response = chatClient.prompt(prompt).call().chatResponse();
-        requireNonNull(response);
-        requireNonNull(response.getResult());
-
-        return response.getResult().getOutput().getText();
     }
 
     @GetMapping("/books")
