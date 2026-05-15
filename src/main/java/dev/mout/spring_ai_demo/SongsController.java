@@ -31,7 +31,7 @@ final class SongsController {
         this.chatClient = builder.build();
     }
 
-    @GetMapping("/by-artist")
+    @GetMapping("/songs-by-artist")
     public Artist getSongsByArtist(@RequestParam(value = "artist", defaultValue = "Earth, wind and fire") String artist) {
         PromptTemplate template = new PromptTemplate(message);
         Prompt prompt = template.create(additionalVariables(artist));

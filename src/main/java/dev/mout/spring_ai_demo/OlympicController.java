@@ -16,6 +16,9 @@ import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * 4. Stuffing the prompt.
+ */
 @RestController
 @RequestMapping("/olympics")
 final class OlympicController {

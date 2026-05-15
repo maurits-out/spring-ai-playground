@@ -6,7 +6,7 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.converter.MapOutputConverter;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -29,8 +29,8 @@ final class ArtistController {
         this.chatClient = builder.build();
     }
 
-    @GetMapping("/artist/{artist}")
-    public Map<String, Object> getArtistsSocialLinks(@PathVariable("artist") String artist) {
+    @GetMapping("/links")
+    public Map<String, Object> getSocialLinksByArtist(@RequestParam(value = "artist", defaultValue = "U2") String artist) {
         PromptTemplate template = new PromptTemplate(message);
         Prompt prompt = template.create(additionalVariables(artist));
         String content = chatClient.prompt(prompt).call().content();
