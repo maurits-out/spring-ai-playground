@@ -14,7 +14,6 @@ import static dev.mout.spring_ai_demo.tools.WeatherTools.CURRENT_WEATHER_TOOL;
 
 /**
  * 6. Using tools.
- *
  * http :8080/cities message=="What is the weather currently in Haarlem?"
  */
 @RestController
