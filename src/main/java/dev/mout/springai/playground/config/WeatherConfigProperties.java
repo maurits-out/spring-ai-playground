@@ -1,4 +1,4 @@
-package dev.mout.spring_ai_demo.config;
+package dev.mout.springai.playground.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

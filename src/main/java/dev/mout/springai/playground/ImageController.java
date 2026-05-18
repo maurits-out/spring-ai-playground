@@ -1,4 +1,4 @@
-package dev.mout.spring_ai_demo;
+package dev.mout.springai.playground;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.UserMessage;

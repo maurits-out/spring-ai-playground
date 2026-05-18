@@ -1,4 +1,4 @@
-package dev.mout.spring_ai_demo;
+package dev.mout.springai.playground;
 
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;

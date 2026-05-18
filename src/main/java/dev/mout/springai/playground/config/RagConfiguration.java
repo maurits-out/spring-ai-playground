@@ -1,4 +1,4 @@
-package dev.mout.spring_ai_demo.config;
+package dev.mout.springai.playground.config;
 
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;

@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>dev.mout</groupId>
-	<artifactId>spring-ai-demo</artifactId>
+	<artifactId>spring-ai-playground</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name/>
 	<description/>

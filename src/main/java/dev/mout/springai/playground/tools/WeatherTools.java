@@ -1,6 +1,6 @@
-package dev.mout.spring_ai_demo.tools;
+package dev.mout.springai.playground.tools;
 
-import dev.mout.spring_ai_demo.config.WeatherConfigProperties;
+import dev.mout.springai.playground.config.WeatherConfigProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;

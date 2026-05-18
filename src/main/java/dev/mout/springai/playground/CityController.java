@@ -1,4 +1,4 @@
-package dev.mout.spring_ai_demo;
+package dev.mout.springai.playground;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.SystemMessage;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static dev.mout.spring_ai_demo.tools.WeatherTools.CURRENT_WEATHER_TOOL;
+import static dev.mout.springai.playground.tools.WeatherTools.CURRENT_WEATHER_TOOL;
 
 /**
  * 6. Using tools.

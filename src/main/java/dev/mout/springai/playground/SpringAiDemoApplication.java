@@ -1,6 +1,6 @@
-package dev.mout.spring_ai_demo;
+package dev.mout.springai.playground;
 
-import dev.mout.spring_ai_demo.config.WeatherConfigProperties;
+import dev.mout.springai.playground.config.WeatherConfigProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
