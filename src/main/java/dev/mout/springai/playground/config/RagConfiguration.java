@@ -21,7 +21,7 @@ import java.util.List;
 @Configuration
 public class RagConfiguration {
 
-    private static final Logger log = LoggerFactory.getLogger(RagConfiguration.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RagConfiguration.class);
 
     @Value("classpath:/docs/olympic-faq.txt")
     private Resource faq;
@@ -47,7 +47,7 @@ public class RagConfiguration {
     }
 
     private void createFromDocument(SimpleVectorStore store, File file, TokenTextSplitter splitter) {
-        log.info("Creating new Vector Store from document");
+        LOGGER.info("Creating new Vector Store from document");
         List<Document> splitDocuments = loadAndSplitDocument(splitter);
         store.add(splitDocuments);
         store.save(file);
@@ -60,7 +60,7 @@ public class RagConfiguration {
     }
 
     private void loadFromFile(SimpleVectorStore store, File file) {
-        log.info("Loading Vector Store from file {}", file);
+        LOGGER.info("Loading Vector Store from file {}", file);
         store.load(file);
     }
 

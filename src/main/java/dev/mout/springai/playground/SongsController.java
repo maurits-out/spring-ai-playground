@@ -2,8 +2,6 @@ package dev.mout.springai.playground;
 
 import org.jspecify.annotations.NonNull;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,9 +27,10 @@ final class SongsController {
 
     @GetMapping("/songs-by-artist")
     public Artist getSongsByArtist(@RequestParam(value = "artist", defaultValue = "Earth, wind and fire") String artist) {
-        PromptTemplate template = new PromptTemplate(MESSAGE);
-        Prompt prompt = template.create(additionalVariables(artist));
-        return chatClient.prompt(prompt).call().entity(Artist.class);
+        return chatClient.prompt()
+                .user(spec -> spec.text(MESSAGE).params(additionalVariables(artist)))
+                .call()
+                .entity(Artist.class);
     }
 
     private @NonNull Map<String, Object> additionalVariables(String artist) {

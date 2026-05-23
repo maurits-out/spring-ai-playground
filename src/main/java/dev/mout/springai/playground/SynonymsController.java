@@ -2,8 +2,6 @@ package dev.mout.springai.playground;
 
 import org.jspecify.annotations.NonNull;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,9 +27,10 @@ final class SynonymsController {
 
     @GetMapping("/synonyms")
     public String synonyms(@RequestParam(value = "word", defaultValue = "eating") String word) {
-        PromptTemplate template = new PromptTemplate(resource);
-        Prompt prompt = template.create(additionalVariables(word));
-        return chatClient.prompt(prompt).call().content();
+        return chatClient.prompt()
+                .user(spec -> spec.text(resource).params(additionalVariables(word)))
+                .call()
+                .content();
     }
 
     private @NonNull Map<String, Object> additionalVariables(String word) {

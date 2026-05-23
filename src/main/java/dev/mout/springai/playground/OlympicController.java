@@ -2,8 +2,6 @@ package dev.mout.springai.playground;
 
 import org.jspecify.annotations.NonNull;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +27,7 @@ final class OlympicController {
             @Value("classpath:/prompts/olympic-sports.st") Resource olympicSportsResource,
             @Value("classpath:/docs/olympic-sports.txt") Resource docsToStuffResource) {
         this.chatClient = builder.build();
-        this.olympicSportsResource= olympicSportsResource;
+        this.olympicSportsResource = olympicSportsResource;
         this.docsToStuffResource = docsToStuffResource;
     }
 
@@ -37,10 +35,12 @@ final class OlympicController {
     public String get2028OlympicsSports(
             @RequestParam(value = "message", defaultValue = "What sports are being included in the 2028 Summer Olympics?") String message,
             @RequestParam(value = "stuffit", defaultValue = "false") boolean stuffit) {
-        PromptTemplate template = new PromptTemplate(olympicSportsResource);
-        Map<String, Object> additionalVariables = additionalVariables(message, stuffit);
-        Prompt prompt = template.create(additionalVariables);
-        return chatClient.prompt(prompt).call().content();
+        return chatClient.prompt().user(spec -> {
+                    Map<String, Object> variables = additionalVariables(message, stuffit);
+                    spec.text(olympicSportsResource).params(variables);
+                })
+                .call()
+                .content();
     }
 
     private @NonNull Map<String, Object> additionalVariables(String message, boolean stuffit) {

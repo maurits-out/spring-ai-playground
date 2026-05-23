@@ -2,8 +2,6 @@ package dev.mout.springai.playground;
 
 import org.jspecify.annotations.NonNull;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.converter.MapOutputConverter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,9 +30,10 @@ final class ArtistController {
 
     @GetMapping("/links")
     public Map<String, Object> getSocialLinksByArtist(@RequestParam(value = "artist", defaultValue = "U2") String artist) {
-        PromptTemplate template = new PromptTemplate(MESSAGE);
-        Prompt prompt = template.create(additionalVariables(artist));
-        String content = chatClient.prompt(prompt).call().content();
+        String content = chatClient.prompt()
+                .user(spec -> spec.text(MESSAGE).params(additionalVariables(artist)))
+                .call()
+                .content();
         return converter.convert(Objects.requireNonNull(content));
     }
 

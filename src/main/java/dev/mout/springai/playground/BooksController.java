@@ -2,8 +2,6 @@ package dev.mout.springai.playground;
 
 import org.jspecify.annotations.NonNull;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.converter.ListOutputConverter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,9 +31,10 @@ final class BooksController {
 
     @GetMapping("/books")
     public List<String> getBooksByAuthor(@RequestParam(value = "artist", defaultValue = "Dan Brown") String author) {
-        PromptTemplate template = new PromptTemplate(MESSAGE);
-        Prompt prompt = template.create(additionalVariables(author));
-        String content = chatClient.prompt(prompt).call().content();
+        String content = chatClient.prompt()
+                .user(spec -> spec.text(MESSAGE).params(additionalVariables(author)))
+                .call()
+                .content();
         return converter.convert(Objects.requireNonNull(content));
     }
 

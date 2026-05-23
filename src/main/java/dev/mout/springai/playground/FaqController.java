@@ -3,8 +3,6 @@ package dev.mout.springai.playground;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStoreRetriever;
@@ -37,15 +35,18 @@ final class FaqController {
 
     @GetMapping("/faq")
     public String prompt(@RequestParam(value = "message", defaultValue = "How can I buy tickets for the Olympic Games Paris 2024") String message) {
-        SearchRequest request = buildSearchRequest(message);
-        List<Document> documents = vectorStoreRetriever.similaritySearch(request);
-        PromptTemplate template = new PromptTemplate(templateResource);
-        Map<String, Object> additionalVariables = createAdditionalVariables(message, documents);
-        Prompt prompt = template.create(additionalVariables);
-        return chatClient.prompt(prompt).call().content();
+        return chatClient.prompt()
+                .user(spec -> {
+                    SearchRequest request = buildSearchRequest(message);
+                    List<Document> documents = vectorStoreRetriever.similaritySearch(request);
+                    Map<String, Object> variables = additionalVariables(message, documents);
+                    spec.text(templateResource).params(variables);
+                })
+                .call()
+                .content();
     }
 
-    private @NonNull Map<String, Object> createAdditionalVariables(String message, List<Document> documents) {
+    private @NonNull Map<String, Object> additionalVariables(String message, List<Document> documents) {
         List<@Nullable String> contentList = documents.stream().map(Document::getText).toList();
         return Map.of(
                 "input", message,
