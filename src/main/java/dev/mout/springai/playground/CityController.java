@@ -1,8 +1,6 @@
 package dev.mout.springai.playground;
 
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.messages.UserMessage;
-import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,10 +26,9 @@ final class CityController {
 
     @GetMapping("/cities")
     public String cities(@RequestParam(value = "message") String message) {
-        UserMessage userMessage = new UserMessage(message);
-        Prompt prompt = new Prompt(userMessage);
         return chatClient
-                .prompt(prompt)
+                .prompt()
+                .user(message)
                 .toolNames(CURRENT_WEATHER_TOOL)
                 .call()
                 .content();
