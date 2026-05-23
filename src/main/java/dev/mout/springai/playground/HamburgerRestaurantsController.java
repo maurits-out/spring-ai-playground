@@ -2,10 +2,11 @@ package dev.mout.springai.playground;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
+
+import static org.springframework.http.MediaType.TEXT_EVENT_STREAM_VALUE;
 
 /**
  * 8. Return a stream.
@@ -21,10 +22,12 @@ final class HamburgerRestaurantsController {
         this.bufferSize = bufferSize;
     }
 
-    @GetMapping(path = "/hamburger-restaurants", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(path = "/hamburger-restaurants", produces = TEXT_EVENT_STREAM_VALUE)
     public Flux<String> getHamburgerRestaurants() {
         return chatClient.prompt()
-                .user(spec -> spec.text("What are the 10 best hamburger restaurants in Amsterdam. Include a short description for each restaurant."))
+                .user(spec -> spec.text("""
+                    What are the 10 best hamburger restaurants in Amsterdam.
+                    Include a short description for each restaurant."""))
                 .stream()
                 .content()
                 .transform(this::toChunk);
