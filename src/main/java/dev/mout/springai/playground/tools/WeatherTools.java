@@ -12,12 +12,10 @@ import java.util.function.Function;
 @Configuration
 public class WeatherTools {
 
-    public static final String CURRENT_WEATHER_TOOL = "currentWeather";
-
     private static final Logger log = LoggerFactory.getLogger(WeatherTools.class);
 
-    @Bean(CURRENT_WEATHER_TOOL)
-    public Function<Request, Response> currentWeatherFunction(WeatherConfigProperties props) {
+    @Bean("currentWeather")
+    public Function<Request, Response> currentWeather(WeatherConfigProperties props) {
         RestClient client = RestClient.create(props.apiUrl());
         return request -> {
             log.info("Weather Request: {}", request);
