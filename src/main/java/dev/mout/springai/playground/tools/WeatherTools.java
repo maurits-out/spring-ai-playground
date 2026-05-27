@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Description;
 import org.springframework.web.client.RestClient;
 
 import java.util.function.Function;
@@ -18,7 +17,6 @@ public class WeatherTools {
     private static final Logger log = LoggerFactory.getLogger(WeatherTools.class);
 
     @Bean(CURRENT_WEATHER_TOOL)
-    @Description("Get the current weather conditions for the given city")
     public Function<Request, Response> currentWeatherFunction(WeatherConfigProperties props) {
         RestClient client = RestClient.create(props.apiUrl());
         return request -> {

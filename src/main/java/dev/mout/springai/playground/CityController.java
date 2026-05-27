@@ -1,9 +1,15 @@
 package dev.mout.springai.playground;
 
+import dev.mout.springai.playground.tools.WeatherTools.Request;
+import dev.mout.springai.playground.tools.WeatherTools.Response;
+import org.jspecify.annotations.NonNull;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.tool.function.FunctionToolCallback;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.function.Function;
 
 import static dev.mout.springai.playground.tools.WeatherTools.CURRENT_WEATHER_TOOL;
 
@@ -18,9 +24,10 @@ final class CityController {
 
     private final ChatClient chatClient;
 
-    public CityController(ChatClient.Builder builder) {
+    public CityController(ChatClient.Builder builder, Function<Request, Response> currentWeatherFunction) {
         this.chatClient = builder
                 .defaultSystem(SYSTEM_MESSAGE)
+                .defaultTools(spec -> spec.callbacks(constructToolCallback(currentWeatherFunction)))
                 .build();
     }
 
@@ -29,8 +36,15 @@ final class CityController {
         return chatClient
                 .prompt()
                 .user(message)
-                .toolNames(CURRENT_WEATHER_TOOL)
                 .call()
                 .content();
+    }
+
+    private @NonNull FunctionToolCallback<Request, Response> constructToolCallback(Function<Request, Response> currentWeatherFunction) {
+        return FunctionToolCallback
+                .builder(CURRENT_WEATHER_TOOL, currentWeatherFunction)
+                .inputType(Request.class)
+                .description("Get the current weather conditions for the given city")
+                .build();
     }
 }
